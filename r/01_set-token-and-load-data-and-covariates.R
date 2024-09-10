@@ -38,6 +38,7 @@ CheckEM::ga_api_load_synthesis(synthesis_id = "19",
                                token = token,
                                dir = "data/raw/",
                                include_zeros = FALSE)
+
 ## This way DOES include the zeros where a species isn't present - it returns a much, much, larger dataframe
 # CheckEM::ga_api_load_synthesis(synthesis_id = "19", 
 #                                token = token, 
