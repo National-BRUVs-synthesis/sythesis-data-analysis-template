@@ -16,6 +16,7 @@ library(httr)
 library(tidyverse)
 library(RJSONIO)
 library(devtools)
+library(leaflet)
 
 # Set your API token to access GlobalArchive data shared with you ----
 # It is extremely important that you keep your API token out of your scripts, and github repository!
@@ -45,6 +46,29 @@ CheckEM::ga_api_all_data(synthesis_id = "19",
 #                          dir = "data/raw/",
 #                          include_zeros = TRUE)
 
-# Example to filter data to species of interest ----
+# Example to filter count data to a species of interest ----
 count_filtered <- count %>%
-  dplyr::filter()
+  dplyr::mutate(scientific = paste(genus, species)) %>%
+  dplyr::filter(scientific %in% "Pseudocaranx spp") %>%
+  left_join(metadata) %>%
+  glimpse()
+
+# Visualise the species abundance data spatially
+leaflet(data = count_filtered) %>%                     
+  addTiles() %>%                                                    
+  addProviderTiles('Esri.WorldImagery', group = "World Imagery") %>%
+  addLayersControl(baseGroups = c("Open Street Map", "World Imagery"), options = layersControlOptions(collapsed = FALSE)) %>%
+  addCircleMarkers(data = count_filtered, lat = ~ latitude_dd, lng = ~ longitude_dd, radius = ~ count / 10, fillOpacity = 0.5, stroke = FALSE, label = ~ as.character(sample))
+
+# Example to filter length data to a species of interest ----
+length_filtered <- length %>%
+  dplyr::mutate(scientific = paste(genus, species)) %>%
+  dplyr::filter(scientific %in% "Pseudocaranx spp") %>%
+  left_join(metadata) %>%
+  glimpse()
+
+# Visualise the length data as a histogram
+ggplot(data = length_filtered, aes(length_mm)) +
+  geom_histogram(fill = "#7cbbeb", colour = "#0c64a8", bins = 20) +
+  theme_classic() +
+  labs(x = "Length (mm)", y = "Abundance")
