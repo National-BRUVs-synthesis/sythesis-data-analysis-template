@@ -17,6 +17,7 @@ library(tidyverse)
 library(RJSONIO)
 library(devtools)
 library(leaflet)
+library(arrow)
 
 # Set your API token to access GlobalArchive data shared with you ----
 # It is extremely important that you keep your API token out of your scripts, and github repository!
