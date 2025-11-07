@@ -46,6 +46,15 @@ CheckEM::ga_api_all_data(synthesis_id = "19",
 #                          dir = "data/raw/",
 #                          include_zeros = TRUE)
 
+# Get additional campaign information ----
+library(googlesheets4)
+url <- "https://docs.google.com/spreadsheets/d/1Z1HC4iII7BqmhLjuAHu2ISdhRJGv8gUqCeiXBI_QMro/edit?usp=sharing"
+additional_info <- read_sheet(url, sheet = "new_additional_info")
+
+# Get Acknowledgments ----
+url_ack <- "https://docs.google.com/spreadsheets/d/1jmX8de447pi7iwJDq0XM4von66J--FpTNK40VZIRIWc/edit?usp=sharing"
+acknowledgements <- read_sheet(url_ack, sheet = "completed_data")
+
 # Example to filter count data to a species of interest ----
 count_filtered <- count %>%
   dplyr::mutate(scientific = paste(genus, species)) %>%
@@ -72,3 +81,4 @@ ggplot(data = length_filtered, aes(length_mm)) +
   geom_histogram(fill = "#7cbbeb", colour = "#0c64a8", bins = 20) +
   theme_classic() +
   labs(x = "Length (mm)", y = "Abundance")
+
