@@ -36,10 +36,11 @@ covariates <- CheckEM::load_rds_from_github(url = "https://raw.githubusercontent
 
 # Load the metadata, count and length ----
 # This way does not include the zeros where a species isn't present - it returns a much smaller dataframe
-CheckEM::ga_api_all_data(synthesis_id = "19",
+all_data <- CheckEM::ga_api_all_data(synthesis_id = "19",
                          token = token,
                          dir = "data/raw/",
                          include_zeros = FALSE)
+list2env(all_data, envir = .GlobalEnv)
 
 ## This way DOES include the zeros where a species isn't present - it returns a much, much, larger dataframe
 # CheckEM::ga_api_all_data(synthesis_id = "19",
